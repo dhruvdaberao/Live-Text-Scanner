@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { extractTextFromImage, getAnswerFromText } from './services/geminiService';
 import { ResultDisplay } from './components/ResultDisplay';
-import { CameraIcon, LogoIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
+import { CameraIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
 
 const App: React.FC = () => {
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
@@ -166,7 +166,7 @@ const App: React.FC = () => {
         <div className="w-full max-w-2xl mx-auto z-10 text-center">
            <header className="my-6 flex flex-col items-center">
              <div className="w-24 h-24 sm:w-28 sm:h-28 mb-6 bg-indigo-600/20 rounded-full flex items-center justify-center ring-1 ring-indigo-500/30">
-                <LogoIcon className="w-12 h-12 sm:w-14 sm:h-14 text-indigo-400" />
+                <img src="/racoon-raccoon.gif" alt="App Logo" className="w-full h-full rounded-full object-cover" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
               Live Q&A Scanner
