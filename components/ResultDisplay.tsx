@@ -56,11 +56,11 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ text, isGettingAns
   };
 
   return (
-    <div className="border-t border-gray-700 p-4 sm:p-6">
+    <div className="pt-4 mt-4 border-t border-gray-700">
       <h2 className="text-lg font-semibold text-gray-300 mb-3">Answer</h2>
       <div className="relative bg-gray-900 rounded-lg">
         <div
-          className="w-full min-h-[8rem] h-auto max-h-48 sm:max-h-64 p-3 sm:p-4 rounded-lg bg-transparent text-gray-300 resize-none overflow-y-auto text-base"
+          className="w-full min-h-[8rem] p-3 sm:p-4 bg-transparent text-gray-300 text-base"
           aria-live="polite"
         >
           {renderContent()}

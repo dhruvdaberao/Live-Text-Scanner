@@ -145,8 +145,8 @@ const App: React.FC = () => {
         <div className="absolute inset-0 bg-grid-gray-700/[0.2] bg-[length:12px_12px]"></div>
         <div className="w-full max-w-2xl mx-auto z-10 text-center">
            <header className="my-6">
-            <h1 className="text-4xl sm:text-5xl font-bold text-white flex items-center justify-center gap-3">
-              <PencilPaperIcon />
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white flex items-center justify-center gap-3">
+              <PencilPaperIcon className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-400" />
               Live Q&A Scanner
             </h1>
             <p className="text-gray-400 mt-2">Scan text piece by piece, then get your answer.</p>
@@ -175,7 +175,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen w-screen bg-black flex flex-col font-sans overflow-hidden">
+    <div className="h-dvh w-screen bg-black flex flex-col font-sans overflow-hidden">
         <video
             ref={videoRef}
             autoPlay
@@ -184,23 +184,26 @@ const App: React.FC = () => {
         />
         <canvas ref={canvasRef} className="hidden" />
         
-        <div className="absolute inset-x-0 bottom-20 flex justify-center z-20">
-            <button 
-                onClick={handleScanFrame}
-                disabled={isScanning || isCoolingDown}
-                className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/50 text-white flex items-center justify-center transition-all duration-200 transform active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed group"
-                aria-label="Scan text from frame"
-            >
-                {isScanning ? (
-                <div className="w-10 h-10 border-4 border-t-white border-transparent rounded-full animate-spin"></div>
-                ) : (
-                <MagnifyingGlassIcon className="w-10 h-10 group-hover:scale-110 transition-transform"/>
-                )}
-            </button>
-        </div>
-
-        <div className="absolute bottom-0 left-0 right-0 bg-gray-800/80 backdrop-blur-lg rounded-t-2xl z-10 max-h-[75vh] flex flex-col shadow-2xl shadow-black/50">
-            <div className="flex-shrink-0 p-4 border-b border-gray-700/50">
+        <div className="absolute bottom-0 left-0 right-0 bg-gray-800/80 backdrop-blur-lg rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50">
+            <div className="flex-shrink-0 p-4 space-y-3 border-b border-gray-700/50">
+                 <button 
+                    onClick={handleScanFrame}
+                    disabled={isScanning || isCoolingDown}
+                    className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-indigo-600 hover:bg-indigo-700 text-white ring-indigo-500/50 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                    aria-label="Scan text from frame"
+                >
+                    {isScanning ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-t-white border-transparent rounded-full animate-spin"></div>
+                      <span>Scanning...</span>
+                    </>
+                    ) : (
+                    <>
+                      <MagnifyingGlassIcon className="w-6 h-6"/>
+                      <span>Scan Frame</span>
+                    </>
+                    )}
+                </button>
                  <button
                     onClick={handleToggleCamera}
                     className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-red-600 hover:bg-red-700 text-white ring-red-500/50"
@@ -218,7 +221,7 @@ const App: React.FC = () => {
                             <h2 className="text-base font-semibold text-gray-300">Scanned Text</h2>
                             <button onClick={handleClearTexts} className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Clear</button>
                         </div>
-                        <div className="bg-gray-900/70 rounded-lg p-2 max-h-32 overflow-y-auto space-y-2">
+                        <div className="bg-gray-900/70 rounded-lg p-2 max-h-40 overflow-y-auto space-y-2">
                             {scannedTexts.map((text, index) => (
                             <p key={index} className={`text-gray-300 p-2 rounded-md text-sm ${index === scannedTexts.length - 1 ? 'animate-highlight' : ''}`}>
                                 {text}
