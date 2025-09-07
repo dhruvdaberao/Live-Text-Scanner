@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { extractTextFromImage, getAnswerFromText } from './services/geminiService';
 import { ResultDisplay } from './components/ResultDisplay';
-import { CameraIcon, PencilPaperIcon, MagnifyingGlassIcon } from './components/Icons';
+import { CameraIcon, PencilPaperIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
 
 const App: React.FC = () => {
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
@@ -13,10 +13,12 @@ const App: React.FC = () => {
   const [cameraAvailable, setCameraAvailable] = useState<boolean>(false);
   const [isCoolingDown, setIsCoolingDown] = useState<boolean>(false);
   const [isAnswerCoolingDown, setIsAnswerCoolingDown] = useState<boolean>(false);
+  const [uiOpacity, setUiOpacity] = useState(85);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const cancelScanRef = useRef(false);
 
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -55,9 +57,15 @@ const App: React.FC = () => {
     }
   }, []);
 
+  const handleCancelScan = () => {
+    cancelScanRef.current = true;
+    setIsScanning(false);
+  };
+
   const handleScanFrame = useCallback(async () => {
     if (isScanning || !videoRef.current || !canvasRef.current || !isCameraActive || isCoolingDown) return;
 
+    cancelScanRef.current = false;
     setIsScanning(true);
     setError(null);
 
@@ -73,10 +81,15 @@ const App: React.FC = () => {
         
         try {
             const text = await extractTextFromImage(base64Image);
+            if (cancelScanRef.current) {
+                console.log("Scan cancelled by user.");
+                return;
+            }
             if (text && text.trim().length > 0) {
               setScannedTexts(prev => [...prev, text.trim()]);
             }
         } catch (apiError: any) {
+            if (cancelScanRef.current) return;
             console.error('Gemini API error:', apiError);
             let errorMessage = 'Failed to extract text. Please try again.';
             if (apiError instanceof Error && (apiError.message.includes('429') || apiError.message.includes('RESOURCE_EXHAUSTED'))) {
@@ -84,9 +97,11 @@ const App: React.FC = () => {
             }
             setError(errorMessage);
         } finally {
+            if (!cancelScanRef.current) {
+                setIsCoolingDown(true);
+                setTimeout(() => setIsCoolingDown(false), 5000);
+            }
             setIsScanning(false);
-            setIsCoolingDown(true);
-            setTimeout(() => setIsCoolingDown(false), 5000);
         }
     } else {
         setIsScanning(false);
@@ -184,26 +199,31 @@ const App: React.FC = () => {
         />
         <canvas ref={canvasRef} className="hidden" />
         
-        <div className="absolute bottom-0 left-0 right-0 bg-gray-800/80 backdrop-blur-lg rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50">
-            <div className="flex-shrink-0 p-4 space-y-3 border-b border-gray-700/50">
-                 <button 
-                    onClick={handleScanFrame}
-                    disabled={isScanning || isCoolingDown}
-                    className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-indigo-600 hover:bg-indigo-700 text-white ring-indigo-500/50 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
-                    aria-label="Scan text from frame"
-                >
-                    {isScanning ? (
-                    <>
-                      <div className="w-5 h-5 border-2 border-t-white border-transparent rounded-full animate-spin"></div>
-                      <span>Scanning...</span>
-                    </>
-                    ) : (
-                    <>
-                      <MagnifyingGlassIcon className="w-6 h-6"/>
-                      <span>Scan Frame</span>
-                    </>
-                    )}
-                </button>
+        <div 
+            className="absolute bottom-0 left-0 right-0 backdrop-blur-lg rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50"
+            style={{ backgroundColor: `rgba(31, 41, 55, ${uiOpacity / 100})` }}
+        >
+            <div className="flex-shrink-0 p-4 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, 0.5 * ${uiOpacity / 100})`}}>
+                {isScanning ? (
+                    <button
+                        onClick={handleCancelScan}
+                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-amber-600 hover:bg-amber-700 text-white ring-amber-500/50"
+                        aria-label="Cancel scan"
+                    >
+                        <StopIcon className="w-6 h-6"/>
+                        <span>Cancel Scan</span>
+                    </button>
+                ) : (
+                    <button 
+                        onClick={handleScanFrame}
+                        disabled={isCoolingDown}
+                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-indigo-600 hover:bg-indigo-700 text-white ring-indigo-500/50 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                        aria-label="Scan text from frame"
+                    >
+                        <MagnifyingGlassIcon className="w-6 h-6"/>
+                        <span>Scan Frame</span>
+                    </button>
+                )}
                  <button
                     onClick={handleToggleCamera}
                     className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-red-600 hover:bg-red-700 text-white ring-red-500/50"
@@ -213,6 +233,20 @@ const App: React.FC = () => {
             </div>
             
             <div className="flex-grow overflow-y-auto p-4">
+                 <div className="mb-4">
+                    <label htmlFor="opacity-slider" className="block text-sm font-medium text-gray-300 mb-1">UI Transparency</label>
+                    <input 
+                        id="opacity-slider" 
+                        type="range" 
+                        min="30" 
+                        max="100" 
+                        value={uiOpacity} 
+                        onChange={(e) => setUiOpacity(Number(e.target.value))} 
+                        className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                        style={{ backgroundColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}
+                    />
+                </div>
+
                 {error && <p className="text-red-400 text-center mb-4">{error}</p>}
                 
                 {scannedTexts.length > 0 && (
@@ -221,7 +255,10 @@ const App: React.FC = () => {
                             <h2 className="text-base font-semibold text-gray-300">Scanned Text</h2>
                             <button onClick={handleClearTexts} className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Clear</button>
                         </div>
-                        <div className="bg-gray-900/70 rounded-lg p-2 max-h-40 overflow-y-auto space-y-2">
+                        <div 
+                            className="rounded-lg p-2 max-h-40 overflow-y-auto space-y-2"
+                            style={{ backgroundColor: `rgba(17, 24, 39, 0.7 * ${uiOpacity / 100})` }}
+                        >
                             {scannedTexts.map((text, index) => (
                             <p key={index} className={`text-gray-300 p-2 rounded-md text-sm ${index === scannedTexts.length - 1 ? 'animate-highlight' : ''}`}>
                                 {text}
@@ -243,7 +280,7 @@ const App: React.FC = () => {
                     </div>
                 )}
 
-                <ResultDisplay text={apiResponse} isGettingAnswer={isGettingAnswer} />
+                <ResultDisplay text={apiResponse} isGettingAnswer={isGettingAnswer} uiOpacity={uiOpacity} />
             </div>
         </div>
     </div>

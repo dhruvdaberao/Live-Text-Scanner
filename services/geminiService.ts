@@ -81,8 +81,8 @@ export async function getAnswerFromText(question: string): Promise<string> {
     const contents = `Treat the following text as a question: "${question}"
 Provide a direct and concise answer to that question.
 Follow these formatting rules for your response:
-1. For general questions, make the most important parts of the answer bold using Markdown (e.g., "**this is important**"). Do not provide any additional explanations or options.
-2. If the question asks for a code snippet, provide the code ONLY in C++. The C++ code must not contain any comments and must include "using namespace std;".
+1. For general questions, make the most important parts of the answer bold using Markdown (e.g., "**this is important**").
+2. If the question asks for a code snippet, provide ONLY the code enclosed in a Markdown code block (e.g., \`\`\`language\\ncode here\\n\`\`\`). Do not provide any additional explanations.
 3. If the question is unclear, return a helpful message.`;
 
     return ai.models.generateContent({
