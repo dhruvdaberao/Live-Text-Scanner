@@ -1,0 +1,7 @@
+{
+  "name": "Live Text Scanner",
+  "description": "A live text scanner that uses your camera to extract text from objects and images in real-time, allowing you to easily copy the detected text.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
