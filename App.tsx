@@ -188,6 +188,8 @@ const App: React.FC = () => {
       </div>
     );
   }
+  
+  const getAnswerDisabled = isGettingAnswer || scannedTexts.length === 0 || isAnswerCoolingDown;
 
   return (
     <div className="h-dvh w-screen bg-black flex flex-col font-sans overflow-hidden">
@@ -200,14 +202,15 @@ const App: React.FC = () => {
         <canvas ref={canvasRef} className="hidden" />
         
         <div 
-            className="absolute bottom-0 left-0 right-0 backdrop-blur-lg rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50"
+            className="absolute bottom-0 left-0 right-0 rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50"
             style={{ backgroundColor: `rgba(31, 41, 55, ${uiOpacity / 100})` }}
         >
-            <div className="flex-shrink-0 p-4 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, 0.5 * ${uiOpacity / 100})`}}>
+            <div className="flex-shrink-0 p-4 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
                 {isScanning ? (
                     <button
                         onClick={handleCancelScan}
-                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-amber-600 hover:bg-amber-700 text-white ring-amber-500/50"
+                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-amber-500/50"
+                        style={{ backgroundColor: `rgba(217, 119, 6, ${uiOpacity / 100})`}}
                         aria-label="Cancel scan"
                     >
                         <StopIcon className="w-6 h-6"/>
@@ -217,7 +220,12 @@ const App: React.FC = () => {
                     <button 
                         onClick={handleScanFrame}
                         disabled={isCoolingDown}
-                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-indigo-600 hover:bg-indigo-700 text-white ring-indigo-500/50 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-indigo-500/50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                        style={{ 
+                            backgroundColor: isCoolingDown 
+                                ? `rgba(75, 85, 99, ${uiOpacity / 100})` 
+                                : `rgba(79, 70, 229, ${uiOpacity / 100})`
+                        }}
                         aria-label="Scan text from frame"
                     >
                         <MagnifyingGlassIcon className="w-6 h-6"/>
@@ -226,7 +234,8 @@ const App: React.FC = () => {
                 )}
                  <button
                     onClick={handleToggleCamera}
-                    className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-red-600 hover:bg-red-700 text-white ring-red-500/50"
+                    className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-red-500/50"
+                    style={{ backgroundColor: `rgba(220, 38, 38, ${uiOpacity / 100})`}}
                 >
                     <CameraIcon /> Stop Camera
                 </button>
@@ -242,7 +251,7 @@ const App: React.FC = () => {
                         max="100" 
                         value={uiOpacity} 
                         onChange={(e) => setUiOpacity(Number(e.target.value))} 
-                        className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                        className="w-full h-2 rounded-lg appearance-none cursor-pointer"
                         style={{ backgroundColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}
                     />
                 </div>
@@ -257,7 +266,7 @@ const App: React.FC = () => {
                         </div>
                         <div 
                             className="rounded-lg p-2 max-h-40 overflow-y-auto space-y-2"
-                            style={{ backgroundColor: `rgba(17, 24, 39, 0.7 * ${uiOpacity / 100})` }}
+                            style={{ backgroundColor: `rgba(17, 24, 39, ${uiOpacity / 100})` }}
                         >
                             {scannedTexts.map((text, index) => (
                             <p key={index} className={`text-gray-300 p-2 rounded-md text-sm ${index === scannedTexts.length - 1 ? 'animate-highlight' : ''}`}>
@@ -267,8 +276,13 @@ const App: React.FC = () => {
                         </div>
                         <button
                             onClick={handleGetAnswer}
-                            disabled={isGettingAnswer || scannedTexts.length === 0 || isAnswerCoolingDown}
-                            className="w-full mt-3 flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-green-600 hover:bg-green-700 text-white ring-green-500/50 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed"
+                            disabled={getAnswerDisabled}
+                            className="w-full mt-3 flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-green-500/50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                            style={{ 
+                                backgroundColor: getAnswerDisabled 
+                                    ? `rgba(75, 85, 99, ${uiOpacity / 100})` 
+                                    : `rgba(22, 163, 74, ${uiOpacity / 100})`
+                            }}
                         >
                             {isGettingAnswer ? (
                             <>

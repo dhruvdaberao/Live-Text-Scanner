@@ -72,7 +72,7 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ text, isGettingAns
   };
 
   return (
-    <div className="pt-4 mt-4 border-t" style={{ borderColor: `rgba(55, 65, 81, 0.5 * ${uiOpacity / 100})`}}>
+    <div className="pt-4 mt-4 border-t" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
       <h2 className="text-lg font-semibold text-gray-300 mb-3">Answer</h2>
       <div className="relative rounded-lg" style={{ backgroundColor: `rgba(17, 24, 39, ${uiOpacity / 100})` }}>
         <div
@@ -84,7 +84,8 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ text, isGettingAns
         {hasText && !isGettingAnswer && (
           <button
             onClick={handleCopy}
-            className="absolute top-3 right-3 p-2 rounded-md bg-gray-700 hover:bg-indigo-600 text-gray-300 hover:text-white transition-all duration-200"
+            className="absolute top-3 right-3 p-2 rounded-md text-gray-300 transition-colors duration-200"
+            style={{ backgroundColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}
             aria-label="Copy text"
           >
             {hasCopied ? <ClipboardCheckIcon /> : <CopyIcon />}
