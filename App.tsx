@@ -952,8 +952,11 @@ const App: React.FC = () => {
                 </ul>
               </div>
             </div>
-             <div className="text-center mt-8">
-                <button onClick={handleClearApiKey} className="text-sm text-gray-500 hover:text-indigo-400 underline transition-colors">
+             <div className="text-center mt-12">
+                <button 
+                    onClick={handleClearApiKey} 
+                    className="py-2 px-5 rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-600 text-gray-400 hover:text-white transition-colors text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gray-500"
+                >
                   Change API Key
                 </button>
             </div>
