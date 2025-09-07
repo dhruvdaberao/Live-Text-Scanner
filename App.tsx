@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { extractTextFromImage, getAnswerFromText } from './services/geminiService';
 import { ResultDisplay } from './components/ResultDisplay';
-import { CameraIcon, PencilPaperIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
+import { CameraIcon, LogoIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
 
 const App: React.FC = () => {
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
@@ -14,6 +14,11 @@ const App: React.FC = () => {
   const [isCoolingDown, setIsCoolingDown] = useState<boolean>(false);
   const [isAnswerCoolingDown, setIsAnswerCoolingDown] = useState<boolean>(false);
   const [uiOpacity, setUiOpacity] = useState(85);
+  const [isPanelExpanded, setIsPanelExpanded] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const startY = useRef(0);
+  const startHeight = useRef(0);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -159,9 +164,11 @@ const App: React.FC = () => {
       <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-gray-700/[0.2] bg-[length:12px_12px]"></div>
         <div className="w-full max-w-2xl mx-auto z-10 text-center">
-           <header className="my-6">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white flex items-center justify-center gap-3">
-              <PencilPaperIcon className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-400" />
+           <header className="my-6 flex flex-col items-center">
+             <div className="w-24 h-24 sm:w-28 sm:h-28 mb-6 bg-indigo-600/20 rounded-full flex items-center justify-center ring-1 ring-indigo-500/30">
+                <LogoIcon className="w-12 h-12 sm:w-14 sm:h-14 text-indigo-400" />
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
               Live Q&A Scanner
             </h1>
             <p className="text-gray-400 mt-2">Scan text piece by piece, then get your answer.</p>
@@ -202,16 +209,26 @@ const App: React.FC = () => {
         <canvas ref={canvasRef} className="hidden" />
         
         <div 
-            className="absolute bottom-0 left-0 right-0 rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50"
-            style={{ backgroundColor: `rgba(31, 41, 55, ${uiOpacity / 100})` }}
+            ref={panelRef}
+            className={`absolute left-0 right-0 rounded-t-2xl z-10 shadow-2xl shadow-black/50 flex flex-col transition-all duration-300 ease-out`}
+            style={{ 
+              backgroundColor: `rgba(31, 41, 55, ${uiOpacity / 100})`,
+              transform: isPanelExpanded ? 'translateY(0)' : 'translateY(calc(100% - 220px))',
+              bottom: isPanelExpanded ? `0` : `calc(-85vh + 220px)`
+            }}
         >
-            <div className="flex-shrink-0 p-4 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
+          <div 
+              className="w-full flex justify-center py-3 cursor-grab"
+          >
+              <div className="w-10 h-1.5 rounded-full" style={{ backgroundColor: `rgba(107, 114, 128, ${uiOpacity/100})`}}></div>
+          </div>
+            <div className="flex-shrink-0 px-4 pb-3 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
                 {isScanning ? (
                     <button
                         onClick={handleCancelScan}
                         className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-amber-500/50"
                         style={{ backgroundColor: `rgba(217, 119, 6, ${uiOpacity / 100})`}}
-                        aria-label="Cancel scan"
+                        aria-label="Stop processing"
                     >
                         <StopIcon className="w-6 h-6"/>
                         <span>Stop Processing</span>
@@ -241,7 +258,7 @@ const App: React.FC = () => {
                 </button>
             </div>
             
-            <div className="flex-grow overflow-y-auto p-4">
+            <div className="flex-grow overflow-y-auto p-4 max-h-[calc(85vh-220px)]">
                  <div className="mb-4">
                     <label htmlFor="opacity-slider" className="block text-sm font-medium text-gray-300 mb-1">UI Transparency</label>
                     <input 

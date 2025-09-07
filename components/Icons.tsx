@@ -23,9 +23,13 @@ export const ClipboardCheckIcon: React.FC<IconProps> = ({ className = "w-5 h-5 t
     </svg>
 );
 
-export const PencilPaperIcon: React.FC<IconProps> = ({ className = "w-8 h-8 text-indigo-400" }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+export const LogoIcon: React.FC<IconProps> = ({ className = "w-12 h-12" }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.4 1.4a1 1 0 0 0 1.4 0l3.9-3.9a1 1 0 0 0-1.4-1.4l-1.4 1.4-1.4-1.4a1 1 0 0 0-1.4 0Z" />
+        <path d="m9.3 17.7-1.4-1.4a1 1 0 0 0-1.4 0L2.6 20.2a1 1 0 0 0 1.4 1.4l3.9-3.9a1 1 0 0 0 0-1.4l-1.4-1.4Z" />
+        <path d="M14.7 17.7a1 1 0 0 0 0-1.4l-1.4-1.4a1 1 0 0 0-1.4 0l-3.9 3.9a1 1 0 0 0 1.4 1.4l1.4-1.4 1.4 1.4a1 1 0 0 0 1.4 0Z" />
+        <path d="m9.3 6.3 1.4 1.4a1 1 0 0 0 1.4 0l3.9-3.9a1 1 0 1 0-1.4-1.4L12.7 5 11.3 3.5a1 1 0 0 0-1.4 0L6 7.4a1 1 0 0 0 1.4 1.4l1.9-1.9Z" />
+        <circle cx="12" cy="12" r="3" />
     </svg>
 );
 
