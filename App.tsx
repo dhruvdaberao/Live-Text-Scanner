@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { extractTextFromImage, getAnswerFromText } from './services/geminiService';
 import { ResultDisplay } from './components/ResultDisplay';
 import { CameraIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
+import logo from '/racoon-raccoon.gif';
 
 const App: React.FC = () => {
   const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
@@ -165,8 +166,8 @@ const App: React.FC = () => {
         <div className="absolute inset-0 bg-grid-gray-700/[0.2] bg-[length:12px_12px]"></div>
         <div className="w-full max-w-2xl mx-auto z-10 text-center">
            <header className="my-6 flex flex-col items-center">
-             <div className="w-24 h-24 sm:w-28 sm:h-28 mb-6 bg-indigo-600/20 rounded-full flex items-center justify-center ring-1 ring-indigo-500/30">
-                <img src="/racoon-raccoon.gif" alt="App Logo" className="w-full h-full rounded-full object-cover" />
+             <div className="w-32 h-32 sm:w-40 sm:h-40 mb-6 bg-indigo-600/20 rounded-full flex items-center justify-center ring-1 ring-indigo-500/30">
+                <img src={logo} alt="App Logo" className="w-full h-full rounded-full object-cover" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
               Live Q&A Scanner
