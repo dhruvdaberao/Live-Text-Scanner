@@ -214,7 +214,7 @@ const App: React.FC = () => {
                         aria-label="Cancel scan"
                     >
                         <StopIcon className="w-6 h-6"/>
-                        <span>Cancel Scan</span>
+                        <span>Stop Processing</span>
                     </button>
                 ) : (
                     <button 
