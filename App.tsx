@@ -14,14 +14,6 @@ const App: React.FC = () => {
   const [isCoolingDown, setIsCoolingDown] = useState<boolean>(false);
   const [isAnswerCoolingDown, setIsAnswerCoolingDown] = useState<boolean>(false);
   const [uiOpacity, setUiOpacity] = useState(85);
-  
-  // State for draggable panel
-  const [panelY, setPanelY] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const panelHeaderRef = useRef<HTMLDivElement>(null);
-  const dragStartRef = useRef<{ startY: number; initialPanelY: number } | null>(null);
-
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -162,68 +154,6 @@ const App: React.FC = () => {
     };
   }, [stopCamera]);
 
-  // --- Draggable Panel Logic ---
-  const handleDragStart = useCallback((e: React.MouseEvent | React.TouchEvent) => {
-    setIsDragging(true);
-    const startY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    dragStartRef.current = { startY, initialPanelY: panelY };
-    if (panelRef.current) {
-      panelRef.current.style.transition = 'none'; // Disable transition during drag
-    }
-  }, [panelY]);
-
-  const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
-    if (!isDragging || !dragStartRef.current || !panelRef.current || !panelHeaderRef.current) return;
-
-    const currentY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    const deltaY = currentY - dragStartRef.current.startY;
-    let newY = dragStartRef.current.initialPanelY + deltaY;
-
-    const collapsedPosition = panelRef.current.offsetHeight - panelHeaderRef.current.offsetHeight;
-    const openPosition = 0;
-
-    newY = Math.max(openPosition, Math.min(newY, collapsedPosition));
-    
-    panelRef.current.style.transform = `translateY(${newY}px)`;
-  }, [isDragging]);
-
-  const handleDragEnd = useCallback(() => {
-    if (!isDragging || !panelRef.current || !panelHeaderRef.current) return;
-
-    setIsDragging(false);
-    dragStartRef.current = null;
-    panelRef.current.style.transition = 'transform 0.3s ease-out';
-
-    const transformStyle = panelRef.current.style.transform;
-    const currentY = transformStyle ? parseFloat(transformStyle.split('(')[1]) : 0;
-    
-    const collapsedPosition = panelRef.current.offsetHeight - panelHeaderRef.current.offsetHeight;
-    const snapThreshold = collapsedPosition / 2;
-
-    if (currentY > snapThreshold) {
-      setPanelY(collapsedPosition);
-    } else {
-      setPanelY(0);
-    }
-  }, [isDragging]);
-  
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', handleDragMove);
-      window.addEventListener('mouseup', handleDragEnd);
-      window.addEventListener('touchmove', handleDragMove);
-      window.addEventListener('touchend', handleDragEnd);
-    }
-
-    return () => {
-      window.removeEventListener('mousemove', handleDragMove);
-      window.removeEventListener('mouseup', handleDragEnd);
-      window.removeEventListener('touchmove', handleDragMove);
-      window.removeEventListener('touchend', handleDragEnd);
-    };
-  }, [isDragging, handleDragMove, handleDragEnd]);
-  // --- End Draggable Panel Logic ---
-
   if (!isCameraActive) {
     return (
       <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
@@ -272,23 +202,10 @@ const App: React.FC = () => {
         <canvas ref={canvasRef} className="hidden" />
         
         <div 
-            ref={panelRef}
-            className="absolute bottom-0 left-0 right-0 rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50 transition-transform duration-300 ease-out"
-            style={{ 
-                backgroundColor: `rgba(31, 41, 55, ${uiOpacity / 100})`,
-                transform: `translateY(${panelY}px)` 
-            }}
+            className="absolute bottom-0 left-0 right-0 rounded-t-2xl z-10 max-h-[85vh] flex flex-col shadow-2xl shadow-black/50"
+            style={{ backgroundColor: `rgba(31, 41, 55, ${uiOpacity / 100})` }}
         >
-            <div 
-                onMouseDown={handleDragStart}
-                onTouchStart={handleDragStart}
-                className="w-full py-3 flex justify-center items-center cursor-grab active:cursor-grabbing"
-                aria-label="Drag to resize panel"
-            >
-                <div className="w-12 h-1.5 rounded-full" style={{ backgroundColor: `rgba(107, 114, 128, ${uiOpacity/100})`}}></div>
-            </div>
-
-            <div ref={panelHeaderRef} className="flex-shrink-0 px-4 pb-4 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
+            <div className="flex-shrink-0 p-4 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
                 {isScanning ? (
                     <button
                         onClick={handleCancelScan}
