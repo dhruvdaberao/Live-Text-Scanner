@@ -270,7 +270,7 @@ const App: React.FC = () => {
                 </ol>
               </div>
               <div>
-                <h3 className="font-semibold text-lg text-white mb-2">Why Use Live Q&A Scanner?</h3>
+                <h3 className="font-semibold text-lg text-white mb-2">Why Use Raccoon-Scan?</h3>
                 <ul className="list-disc list-inside space-y-1">
                   <li>Instantly get answers from physical documents or textbooks.</li>
                   <li>Extract and understand code snippets from a screen.</li>
