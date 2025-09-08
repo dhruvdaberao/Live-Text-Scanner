@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { initializeApi, extractTextFromImage, getAnswerFromText } from './services/geminiService';
 import { ResultDisplay } from './components/ResultDisplay';
 import { CameraIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
-const logoGif = '/racoon-raccoon.gif'; // Import the GIF directly
+import logoGif from './racoon-raccoon.gif';
 
 const App: React.FC = () => {
   // New state for API key management
