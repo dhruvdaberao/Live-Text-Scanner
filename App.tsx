@@ -198,7 +198,7 @@ const App: React.FC = () => {
         <div className="w-full max-w-md mx-auto z-10 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Enter Your API Key</h1>
           <p className="text-gray-400 mb-6">
-            To use the Live Q&A Scanner, please provide your own Google Gemini API key.
+            To use the Live Raccoon Scan, please provide your own Google Gemini API key.
           </p>
           <div className="space-y-4">
             <input
@@ -239,7 +239,7 @@ const App: React.FC = () => {
                 <img src={logoGif} alt="App Logo" className="w-full h-full rounded-full object-cover" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
-              Live Q&A Scanner
+              Raccoon Scan
             </h1>
             <p className="text-gray-400 mt-2">Scan text piece by piece, then get your answer.</p>
           </header>
