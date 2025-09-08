@@ -29,7 +29,7 @@ const formatResponse = (text: string): string => {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
-  safeText = safeText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-indigo-400 font-semibold">$1</strong>');
+  safeText = safeText.replace(/\*\*(.*?)\*\*/g, '<strong class="text-zinc-100 font-semibold">$1</strong>');
   
   return `<div class="whitespace-pre-wrap">${safeText}</div>`;
 };
@@ -59,7 +59,7 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ text, isGettingAns
   const hasText = text.trim().length > 0;
 
   const renderContent = () => {
-    const placeholderClasses = "w-full min-h-[8rem] h-full flex items-center justify-center text-center italic text-gray-500 p-4";
+    const placeholderClasses = "w-full min-h-[8rem] h-full flex items-center justify-center text-center italic text-zinc-500 p-4";
     if (isGettingAnswer) {
       return <div className={placeholderClasses}>Getting your answer...</div>;
     }
@@ -72,11 +72,11 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ text, isGettingAns
   };
 
   return (
-    <div className="pt-4 mt-4 border-t" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
-      <h2 className="text-lg font-semibold text-gray-300 mb-3">Answer</h2>
-      <div className="relative rounded-lg" style={{ backgroundColor: `rgba(17, 24, 39, ${uiOpacity / 100})` }}>
+    <div className="pt-4 mt-4 border-t" style={{ borderColor: `rgba(63, 63, 70, ${uiOpacity / 100})`}}>
+      <h2 className="text-lg font-semibold text-zinc-300 mb-3">Answer</h2>
+      <div className="relative rounded-lg" style={{ backgroundColor: `rgba(24, 24, 27, ${uiOpacity / 100})` }}>
         <div
-          className="w-full min-h-[8rem] p-3 sm:p-4 text-gray-300 text-base overflow-x-auto"
+          className="w-full min-h-[8rem] p-3 sm:p-4 text-zinc-300 text-base overflow-x-auto"
           aria-live="polite"
         >
           {renderContent()}
@@ -84,8 +84,8 @@ export const ResultDisplay: React.FC<ResultDisplayProps> = ({ text, isGettingAns
         {hasText && !isGettingAnswer && (
           <button
             onClick={handleCopy}
-            className="absolute top-3 right-3 p-2 rounded-md text-gray-300 transition-colors duration-200"
-            style={{ backgroundColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}
+            className="absolute top-3 right-3 p-2 rounded-md text-zinc-300 transition-colors duration-200"
+            style={{ backgroundColor: `rgba(63, 63, 70, ${uiOpacity / 100})`}}
             aria-label="Copy text"
           >
             {hasCopied ? <ClipboardCheckIcon /> : <CopyIcon />}

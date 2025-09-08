@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF--8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="racoon1.png">
-    <title>Raccoon-Scan</title>
+    <link rel="icon" type="image/png" href="/racoon1.png">
+    <title>Raccoon Scan</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="importmap">
-      {
-        "imports": {
-          "react": "https://aistudiocdn.com/react@^19.1.1",
-          "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
-          "react/": "https://aistudiocdn.com/react@^19.1.1/",
-          "@google/genai": "https://aistudiocdn.com/@google/genai@^1.17.0"
-        }
-      }
-    </script>
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.17.0",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "vite": "https://aistudiocdn.com/vite@^7.1.5"
+  }
+}
+</script>
     <style>
       @keyframes fadeIn {
         from {
@@ -33,16 +35,15 @@
       }
 
       @keyframes highlight {
-        0% { background-color: rgba(79, 70, 229, 0.4); } /* a transparent indigo */
+        0% { background-color: rgba(228, 228, 231, 0.2); } /* a transparent zinc/gray */
         100% { background-color: transparent; }
       }
       .animate-highlight {
         animation: highlight 1.5s ease-out;
       }
     </style>
-  <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-gray-900 text-white">
+  <body class="bg-zinc-900 text-zinc-200">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

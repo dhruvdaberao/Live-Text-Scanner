@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { initializeApi, extractTextFromImage, getAnswerFromText } from './services/geminiService';
 import { ResultDisplay } from './components/ResultDisplay';
 import { CameraIcon, MagnifyingGlassIcon, StopIcon } from './components/Icons';
-import logoGif from './racoon-raccoon.gif'; // Import the GIF directly
+const logoGif = '/racoon-raccoon.gif'; // Import the GIF directly
 
 const App: React.FC = () => {
   // New state for API key management
@@ -193,11 +193,11 @@ const App: React.FC = () => {
   // Render API Key Prompt if no key is set
   if (!apiKey) {
     return (
-      <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-gray-700/[0.2] bg-[length:12px_12px]"></div>
+      <div className="min-h-screen bg-zinc-900 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-zinc-700/[0.2] bg-[length:12px_12px]"></div>
         <div className="w-full max-w-md mx-auto z-10 text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Enter Your API Key</h1>
-          <p className="text-gray-400 mb-6">
+          <p className="text-zinc-400 mb-6">
             To use the Live Raccoon Scan, please provide your own Google Gemini API key.
           </p>
           <div className="space-y-4">
@@ -206,18 +206,18 @@ const App: React.FC = () => {
               value={apiKeyInput}
               onChange={(e) => setApiKeyInput(e.target.value)}
               placeholder="Enter your Gemini API Key"
-              className="w-full bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-400"
               aria-label="Gemini API Key Input"
             />
             <button
               onClick={handleSaveApiKey}
-              className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-indigo-600 hover:bg-indigo-700 text-white ring-indigo-500/50"
+              className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 bg-gray-200 hover:bg-gray-300 text-zinc-900 ring-gray-300/50"
             >
               Save & Start Scanning
             </button>
             {apiKeyError && <p className="text-red-400 text-sm mt-2">{apiKeyError}</p>}
           </div>
-          <div className="text-xs text-gray-500 mt-6 text-left p-4 bg-gray-800/50 rounded-lg">
+          <div className="text-xs text-zinc-500 mt-6 text-left p-4 bg-zinc-800/50 rounded-lg">
             <p className="font-semibold mb-1">Where do I get a key?</p>
             <p>You can get a free API key from Google AI Studio.</p>
             <p className="mt-2 font-semibold">Is this secure?</p>
@@ -231,17 +231,17 @@ const App: React.FC = () => {
   // Render Start Screen if key is set but camera is off
   if (!isCameraActive) {
     return (
-      <div className="min-h-screen bg-gray-900 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-gray-700/[0.2] bg-[length:12px_12px]"></div>
+      <div className="min-h-screen bg-zinc-900 flex flex-col items-center justify-center p-4 font-sans relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-zinc-700/[0.2] bg-[length:12px_12px]"></div>
         <div className="w-full max-w-4xl mx-auto z-10 text-center flex flex-col items-center">
            <header className="my-6 flex flex-col items-center">
-             <div className="w-40 h-40 sm:w-48 sm:h-48 mb-6 bg-indigo-600/20 rounded-full flex items-center justify-center ring-1 ring-indigo-500/30">
+             <div className="w-40 h-40 sm:w-48 sm:h-48 mb-6 bg-gray-500/20 rounded-full flex items-center justify-center ring-1 ring-gray-400/30">
                 <img src={logoGif} alt="App Logo" className="w-full h-full rounded-full object-cover" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
               Raccoon Scan
             </h1>
-            <p className="text-gray-400 mt-2">Scan text piece by piece, then get your answer.</p>
+            <p className="text-zinc-400 mt-2">Scan text piece by piece, then get your answer.</p>
           </header>
           <main className="my-8">
              <button
@@ -249,8 +249,8 @@ const App: React.FC = () => {
               disabled={!cameraAvailable}
               className={`flex items-center justify-center gap-3 text-lg font-semibold py-4 px-8 rounded-full transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-4 mx-auto
               ${!cameraAvailable 
-                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                : 'bg-indigo-600 hover:bg-indigo-700 text-white ring-indigo-500/50'
+                ? 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
+                : 'bg-gray-200 hover:bg-gray-300 text-zinc-900 ring-gray-300/50'
               }`}
             >
               <CameraIcon /> Start Camera
@@ -258,7 +258,7 @@ const App: React.FC = () => {
             {error && <p className="text-red-400 text-center mt-4">{error}</p>}
             {!cameraAvailable && <p className="text-yellow-400 text-center mt-4">Camera not found or supported on this device.</p>}
           </main>
-          <div className="w-full max-w-4xl mx-auto text-gray-400 text-left px-4 py-8 mt-4">
+          <div className="w-full max-w-4xl mx-auto text-zinc-400 text-left px-4 py-8 mt-4">
             <div className="grid md:grid-cols-2 gap-8 text-sm">
               <div>
                 <h3 className="font-semibold text-lg text-white mb-2">How to Use</h3>
@@ -270,7 +270,7 @@ const App: React.FC = () => {
                 </ol>
               </div>
               <div>
-                <h3 className="font-semibold text-lg text-white mb-2">Why Use Raccoon-Scan?</h3>
+                <h3 className="font-semibold text-lg text-white mb-2">Why Use Raccoon Scan?</h3>
                 <ul className="list-disc list-inside space-y-1">
                   <li>Instantly get answers from physical documents or textbooks.</li>
                   <li>Extract and understand code snippets from a screen.</li>
@@ -281,7 +281,7 @@ const App: React.FC = () => {
              <div className="text-center mt-12">
                 <button 
                     onClick={handleClearApiKey} 
-                    className="py-2 px-5 rounded-full bg-gray-800 hover:bg-gray-700 border border-gray-600 text-gray-400 hover:text-white transition-colors text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    className="py-2 px-5 rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-zinc-400 hover:text-white transition-colors text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-zinc-500"
                 >
                   Change API Key
                 </button>
@@ -308,20 +308,20 @@ const App: React.FC = () => {
         <div 
             className={`absolute bottom-0 left-0 right-0 rounded-t-2xl z-10 shadow-2xl shadow-black/50 flex flex-col transition-transform duration-300 ease-out`}
             style={{ 
-              backgroundColor: `rgba(31, 41, 55, ${uiOpacity / 100})`,
+              backgroundColor: `rgba(39, 39, 42, ${uiOpacity / 100})`,
               transform: isPanelExpanded ? 'translateY(0)' : 'translateY(calc(100% - 220px))',
               height: '85vh'
             }}
         >
           <div className="w-full flex justify-center py-3 cursor-grab">
-              <div className="w-10 h-1.5 rounded-full" style={{ backgroundColor: `rgba(107, 114, 128, ${uiOpacity/100})`}}></div>
+              <div className="w-10 h-1.5 rounded-full" style={{ backgroundColor: `rgba(113, 113, 122, ${uiOpacity/100})`}}></div>
           </div>
-            <div className="flex-shrink-0 px-4 pb-3 space-y-3 border-b" style={{ borderColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}>
+            <div className="flex-shrink-0 px-4 pb-3 space-y-3 border-b" style={{ borderColor: `rgba(63, 63, 70, ${uiOpacity / 100})`}}>
                 {isScanning ? (
                     <button
                         onClick={handleCancelScan}
-                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-amber-500/50"
-                        style={{ backgroundColor: `rgba(217, 119, 6, ${uiOpacity / 100})`}}
+                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-zinc-500/50"
+                        style={{ backgroundColor: `rgba(113, 113, 122, ${uiOpacity / 100})`}}
                         aria-label="Stop processing"
                     >
                         <StopIcon className="w-6 h-6"/>
@@ -331,11 +331,11 @@ const App: React.FC = () => {
                     <button 
                         onClick={handleScanFrame}
                         disabled={isCoolingDown}
-                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-indigo-500/50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                        className="w-full flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-zinc-500/50 disabled:text-zinc-400 disabled:cursor-not-allowed"
                         style={{ 
                             backgroundColor: isCoolingDown 
-                                ? `rgba(75, 85, 99, ${uiOpacity / 100})` 
-                                : `rgba(79, 70, 229, ${uiOpacity / 100})`
+                                ? `rgba(63, 63, 70, ${uiOpacity / 100})` 
+                                : `rgba(82, 82, 91, ${uiOpacity / 100})`
                         }}
                         aria-label="Scan text from frame"
                     >
@@ -354,7 +354,7 @@ const App: React.FC = () => {
             
             <div className="flex-grow overflow-y-auto p-4">
                  <div className="mb-4">
-                    <label htmlFor="opacity-slider" className="block text-sm font-medium text-gray-300 mb-1">UI Transparency</label>
+                    <label htmlFor="opacity-slider" className="block text-sm font-medium text-zinc-300 mb-1">UI Transparency</label>
                     <input 
                         id="opacity-slider" 
                         type="range" 
@@ -363,7 +363,7 @@ const App: React.FC = () => {
                         value={uiOpacity} 
                         onChange={(e) => setUiOpacity(Number(e.target.value))} 
                         className="w-full h-2 rounded-lg appearance-none cursor-pointer"
-                        style={{ backgroundColor: `rgba(55, 65, 81, ${uiOpacity / 100})`}}
+                        style={{ backgroundColor: `rgba(63, 63, 70, ${uiOpacity / 100})`}}
                     />
                 </div>
 
@@ -372,15 +372,15 @@ const App: React.FC = () => {
                 {scannedTexts.length > 0 && (
                     <div className="mb-4 animate-fade-in">
                         <div className="flex justify-between items-center mb-2">
-                            <h2 className="text-base font-semibold text-gray-300">Scanned Text</h2>
-                            <button onClick={handleClearTexts} className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">Clear</button>
+                            <h2 className="text-base font-semibold text-zinc-300">Scanned Text</h2>
+                            <button onClick={handleClearTexts} className="text-sm font-medium text-zinc-400 hover:text-zinc-300 transition-colors">Clear</button>
                         </div>
                         <div 
                             className="rounded-lg p-2 max-h-40 overflow-y-auto space-y-2"
-                            style={{ backgroundColor: `rgba(17, 24, 39, ${uiOpacity / 100})` }}
+                            style={{ backgroundColor: `rgba(24, 24, 27, ${uiOpacity / 100})` }}
                         >
                             {scannedTexts.map((text, index) => (
-                            <p key={index} className={`text-gray-300 p-2 rounded-md text-sm ${index === scannedTexts.length - 1 ? 'animate-highlight' : ''}`}>
+                            <p key={index} className={`text-zinc-300 p-2 rounded-md text-sm ${index === scannedTexts.length - 1 ? 'animate-highlight' : ''}`}>
                                 {text}
                             </p>
                             ))}
@@ -388,10 +388,10 @@ const App: React.FC = () => {
                         <button
                             onClick={handleGetAnswer}
                             disabled={getAnswerDisabled}
-                            className="w-full mt-3 flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-green-500/50 disabled:text-gray-400 disabled:cursor-not-allowed"
+                            className="w-full mt-3 flex items-center justify-center gap-3 text-lg font-semibold py-3 px-6 rounded-lg transition-colors duration-300 transform active:scale-95 focus:outline-none focus:ring-4 text-white ring-green-500/50 disabled:text-zinc-400 disabled:cursor-not-allowed"
                             style={{ 
                                 backgroundColor: getAnswerDisabled 
-                                    ? `rgba(75, 85, 99, ${uiOpacity / 100})` 
+                                    ? `rgba(63, 63, 70, ${uiOpacity / 100})` 
                                     : `rgba(22, 163, 74, ${uiOpacity / 100})`
                             }}
                         >
